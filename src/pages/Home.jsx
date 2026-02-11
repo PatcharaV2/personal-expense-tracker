@@ -6,7 +6,7 @@ const Home = () => {
     const { expenses, deleteExpense } = useContext(ExpenseContext);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [sortType, setSortType] = useState("date");
+    const [sortType, setSortType] = useState("last");
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
@@ -19,12 +19,25 @@ const Home = () => {
     });
 
     const sortedExpenses = [...filteredExpenses].sort((a, b) => {
-        if (sortType === "amount") {
+    switch (sortType) {
+        case "amount-desc":
             return b.amount - a.amount;
-        } else {
+        case "amount-asc":
+            return a.amount - b.amount;
+        case "date-asc":
+            return new Date(a.date) - new Date(b.date);
+
+        case "date-desc":
             return new Date(b.date) - new Date(a.date);
-        }
-    });
+
+        case "last":
+            return b.id - a.id;
+
+        default:
+            return new Date(b.date) - new Date(a.date);
+    }
+});
+
 
     const exportCSV = () => {
         if (sortedExpenses.length === 0) {
@@ -35,11 +48,12 @@ const Home = () => {
         const headers = ["Date", "Category", "Amount", "Note"];
 
         const rows = sortedExpenses.map(item => [
-            item.date,
+            formatDateTime(item.date),
             item.category,
             item.amount,
             item.note
         ]);
+
 
         let csvContent =
             headers.join(",") +
@@ -47,7 +61,7 @@ const Home = () => {
             rows.map(row => row.map(text => `"${text}"`).join(",")).join("\n");
 
         const BOM = "\uFEFF";
-        const blob = new Blob([BOM + csvContent], {type: "text/csv;charset=utf-8;" });
+        const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement("a");
@@ -65,6 +79,10 @@ const Home = () => {
         setShowConfirm(false);
     };
 
+    const formatDateTime = (dateStr) => {
+        return new Date(dateStr).toLocaleString("th-Th");
+    };
+
     return (
         <div>
             <h2>Expense List</h2>
@@ -78,14 +96,14 @@ const Home = () => {
 
                 <label>Start: </label>
                 <input
-                    type="date"
+                    type="datetime-local"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
                 />
 
                 <label> End: </label>
                 <input
-                    type="date"
+                    type="datetime-local"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                 />
@@ -107,8 +125,11 @@ const Home = () => {
                     value={sortType}
                     onChange={(e) => setSortType(e.target.value)}
                 >
-                    <option value="date">Date</option>
-                    <option value="amount">Amount</option>
+                    <option value="date-desc">Newest Date</option>
+                    <option value="date-asc">Oldest Date</option>
+                    <option value="amount-desc">Amount (High → Low)</option>
+                    <option value="amount-asc">Amount (Low → High)</option>
+                    <option value="last">Last Added</option>
                 </select>
             </div>
 
@@ -120,7 +141,7 @@ const Home = () => {
                         <div>
                             <b>{item.note}</b> – {item.amount} บาท
                             <br />
-                            <small>{item.date}</small>
+                            <small>{formatDateTime(item.date)}</small>
                         </div>
 
                         <div>

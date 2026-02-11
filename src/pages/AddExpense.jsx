@@ -38,7 +38,7 @@ const AddExpense = () => {
             <h2>Add Expense</h2>
 
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="form-group">
                     <label>Amount (บาท): </label>
                     <input
                         type="number"
@@ -48,7 +48,7 @@ const AddExpense = () => {
                     />
                 </div>
 
-                <div>
+                <div className="form-group">
                     <label>Category: </label>
                     <select
                         name="category"
@@ -64,7 +64,7 @@ const AddExpense = () => {
                     </select>
                 </div>
 
-                <div>
+                <div className="form-group">
                     <label>Date: </label>
                     <input
                         type="date"
@@ -74,7 +74,7 @@ const AddExpense = () => {
                     />
                 </div>
 
-                <div>
+                <div className="form-group">
                     <label>Note: </label>
                     <input
                         type="text"

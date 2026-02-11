@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    margin-right: 15px;
+    color: #333;
+    font-weight: bold;
+}
+
+h1,
+h2,
+h3 {
+    color: #333;
+}
+
+button {
+    padding: 8px 12px;
+    margin-left: 10px;
+    border: none;
+    background: #6a5acd;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #5a4ac7;
+}
+
+input,
+select {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.expense-card {
+    background: #fafafa;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-box {
+    background: #fafafa;
+    padding: 5px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.delete-button {
+    padding: 5px;
+    margin-top: 4px;
+}
+
+.edit-button{
+
+}

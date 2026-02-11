@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 
@@ -56,6 +56,23 @@ export const ExpenseProvider = ({ children }) => {
         );
     };
 
+    const deleteAllExpenses = () => {
+        setExpenses(
+            expenses.filter(
+                (e) => e.userId !== currentUser.username
+            )
+        );
+    };
+
+    const restoreExpense = (expense) => {
+        setExpenses(prev => [...prev, expense]);
+    };
+
+    const restoreMultiple = (items) => {
+        setExpenses(prev => [...prev, ...items]);
+    };
+
+
     return (
         <ExpenseContext.Provider
             value={{
@@ -64,6 +81,9 @@ export const ExpenseProvider = ({ children }) => {
                 deleteExpense,
                 filterByDate,
                 updateExpense,
+                deleteAllExpenses,
+                restoreExpense,
+                restoreMultiple,
             }}
         >
             {children}

@@ -117,12 +117,12 @@ select {
 }
 
 .summary-card h3 {
-  color: #0f2a5e;      /* น้ำเงินเข้ม – ใช้กับทุกการ์ด */
+  color: #0f2a5e;
   margin: 0 0 10px 0;
 }
 
 .summary-card p {
-  color: #1e1e1e;      /* ดำเข้ม – ใช้กับข้อมูลทุกการ์ด */
+  color: #1e1e1e;
   font-weight: bold;
   margin: 5px 0;
 }
@@ -178,4 +178,44 @@ select {
 
 .cancel-btn:hover {
   background: #7f8c8d;
+}
+
+.delete-btn-all {
+  background: #c0392b;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn-all:hover {
+  background: #a93226;
+}
+
+.delete-btn-all:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.undo-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.undo-bar button {
+  background: #f1c40f;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
 }

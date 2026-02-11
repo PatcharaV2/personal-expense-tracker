@@ -1,15 +1,19 @@
 import { useContext, useState } from "react";
 import { ExpenseContext } from "../context/ExpenseContext";
 import { Link } from "react-router-dom";
+import { UndoContext } from "../context/UndoContext";
 
 const Home = () => {
-    const { expenses, deleteExpense } = useContext(ExpenseContext);
+    const { expenses, deleteExpense, deleteAllExpenses, restoreExpense } = useContext(ExpenseContext);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [sortType, setSortType] = useState("last");
+    const [showDeleteAllConfirm, setShowDeleteAllConfirm] = useState(false);
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
+
+    const { triggerUndo } = useContext(UndoContext);
 
     const filteredExpenses = expenses.filter((item) => {
         if (!startDate || !endDate) return true;
@@ -19,24 +23,24 @@ const Home = () => {
     });
 
     const sortedExpenses = [...filteredExpenses].sort((a, b) => {
-    switch (sortType) {
-        case "amount-desc":
-            return b.amount - a.amount;
-        case "amount-asc":
-            return a.amount - b.amount;
-        case "date-asc":
-            return new Date(a.date) - new Date(b.date);
+        switch (sortType) {
+            case "amount-desc":
+                return b.amount - a.amount;
+            case "amount-asc":
+                return a.amount - b.amount;
+            case "date-asc":
+                return new Date(a.date) - new Date(b.date);
 
-        case "date-desc":
-            return new Date(b.date) - new Date(a.date);
+            case "date-desc":
+                return new Date(b.date) - new Date(a.date);
 
-        case "last":
-            return b.id - a.id;
+            case "last":
+                return b.id - a.id;
 
-        default:
-            return new Date(b.date) - new Date(a.date);
-    }
-});
+            default:
+                return new Date(b.date) - new Date(a.date);
+        }
+    });
 
 
     const exportCSV = () => {
@@ -75,9 +79,14 @@ const Home = () => {
 
 
     const confirmDelete = () => {
+        const itemToDelete = expenses.find(e => e.id === selectedId);
         deleteExpense(selectedId);
+
+        triggerUndo(itemToDelete);
+
         setShowConfirm(false);
     };
+
 
     const formatDateTime = (dateStr) => {
         return new Date(dateStr).toLocaleString("th-Th");
@@ -135,6 +144,16 @@ const Home = () => {
 
             {sortedExpenses.length === 0 && <p>No expenses found</p>}
 
+            <div style={{ marginBottom: "15px" }}>
+                <button
+                    className="delete-btn-all"
+                    onClick={() => setShowDeleteAllConfirm(true)}
+                    disabled={expenses.length === 0}
+                >
+                    Delete All Expenses
+                </button>
+            </div>
+
             <ul>
                 {sortedExpenses.map((item) => (
                     <div key={item.id} className="expense-card">
@@ -183,6 +202,37 @@ const Home = () => {
                     </div>
                 </div>
             )}
+            {showDeleteAllConfirm && (
+                <div className="modal-overlay">
+                    <div className="modal-box">
+                        <h3>Confirm Delete All</h3>
+                        <p>Are you sure you want to delete ALL expenses?</p>
+                        <p>You will be able to undo within 10 seconds.</p>
+
+                        <div className="modal-actions">
+                            <button
+                                className="confirm-btn"
+                                onClick={() => {
+                                    const allItems = [...expenses];
+                                    deleteAllExpenses();
+                                    triggerUndo(allItems);
+                                    setShowDeleteAllConfirm(false);
+                                }}
+                            >
+                                Yes, Delete All
+                            </button>
+
+                            <button
+                                className="cancel-btn"
+                                onClick={() => setShowDeleteAllConfirm(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

@@ -26,6 +26,40 @@ const Home = () => {
         }
     });
 
+    const exportCSV = () => {
+        if (sortedExpenses.length === 0) {
+            alert("No data to export");
+            return;
+        }
+
+        const headers = ["Date", "Category", "Amount", "Note"];
+
+        const rows = sortedExpenses.map(item => [
+            item.date,
+            item.category,
+            item.amount,
+            item.note
+        ]);
+
+        let csvContent =
+            headers.join(",") +
+            "\n" +
+            rows.map(row => row.map(text => `"${text}"`).join(",")).join("\n");
+
+        const BOM = "\uFEFF";
+        const blob = new Blob([BOM + csvContent], {type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "expenses.csv");
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+
     const confirmDelete = () => {
         deleteExpense(selectedId);
         setShowConfirm(false);
@@ -34,6 +68,10 @@ const Home = () => {
     return (
         <div>
             <h2>Expense List</h2>
+
+            <button onClick={exportCSV} style={{ marginBottom: "10px" }}>
+                Export CSV
+            </button>
 
             <div className="filter-box">
                 <h4>Filter by Date</h4>

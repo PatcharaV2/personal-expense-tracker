@@ -74,11 +74,56 @@ select {
     margin-bottom: 20px;
 }
 
-.delete-button {
-    padding: 5px;
-    margin-top: 4px;
+.edit {
+    background-color: sandybrown;
+    color: white;
 }
 
-.edit-button{
-
+.edit:hover{
+    background-color: rgb(204, 147, 98);
 }
+
+.back-btn {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.back-btn:hover {
+    background-color: #767c7c;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.summary-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  padding: 15px;
+  border-radius: 10px;
+  min-width: 200px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  background: #f0f3fa;
+}
+
+.summary-card h3 {
+  color: #0f2a5e;      /* น้ำเงินเข้ม – ใช้กับทุกการ์ด */
+  margin: 0 0 10px 0;
+}
+
+.summary-card p {
+  color: #1e1e1e;      /* ดำเข้ม – ใช้กับข้อมูลทุกการ์ด */
+  font-weight: bold;
+  margin: 5px 0;
+}
+

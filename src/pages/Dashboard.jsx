@@ -13,19 +13,27 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const Dashboard = () => {
     const { expenses } = useContext(ExpenseContext);
 
-    const total = expenses.reduce(
+    const totalExpense = expenses.reduce(
         (sum, item) => sum + Number(item.amount),
         0
     );
 
-    const categorySummary = {};
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
 
-    expenses.forEach((item) => {
-        if (!categorySummary[item.category]) {
-            categorySummary[item.category] = 0;
-        }
-        categorySummary[item.category] += Number(item.amount);
-    });
+    const thisMonthExpense = expenses
+        .filter((item) => {
+            const d = new Date(item.date);
+            return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+        })
+        .reduce((sum, item) => sum + Number(item.amount), 0);
+
+    // รวมยอดตามหมวดหมู่
+    const categorySummary = expenses.reduce((acc, item) => {
+        acc[item.category] =
+            (acc[item.category] || 0) + Number(item.amount);
+        return acc;
+    }, {});
 
     const data = {
         labels: Object.keys(categorySummary),
@@ -49,7 +57,30 @@ const Dashboard = () => {
         <div>
             <h2>Dashboard</h2>
 
-            <h3>Total Expense: {total} บาท</h3>
+            <h3>Total Expense: {totalExpense} บาท</h3>
+
+            <div className="summary-container">
+
+                <div className="summary-card">
+                    <h3>Total Expense</h3>
+                    <p>{totalExpense.toLocaleString()} ฿</p>
+                </div>
+
+                <div className="summary-card">
+                    <h3>This Month</h3>
+                    <p>{thisMonthExpense.toLocaleString()} ฿</p>
+                </div>
+
+                <div className="summary-card">
+                    <h3>Categories</h3>
+                    {Object.entries(categorySummary).map(([cat, total]) => (
+                        <p key={cat}>
+                            {cat}: {total.toLocaleString()} ฿
+                        </p>
+                    ))}
+                </div>
+
+            </div>
 
             {expenses.length === 0 ? (
                 <p>No data to display</p>

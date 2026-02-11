@@ -31,6 +31,14 @@ export const ExpenseProvider = ({ children }) => {
         });
     };
 
+    const updateExpense = (id, updateData) =>{
+        setExpenses(
+            expenses.map((item) =>
+                item.id === id ? {...item, ...updateData} : item
+            )
+        );
+    };
+
     return (
         <ExpenseContext.Provider
             value={{
@@ -38,6 +46,7 @@ export const ExpenseProvider = ({ children }) => {
                 addExpense,
                 deleteExpense,
                 filterByDate,
+                updateExpense,
             }}
         >
             {children}

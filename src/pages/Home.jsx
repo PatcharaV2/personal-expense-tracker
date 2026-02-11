@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { ExpenseContext } from "../context/ExpenseContext";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const { expenses, deleteExpense } = useContext(ExpenseContext);
@@ -21,6 +22,12 @@ const Home = () => {
             return new Date(b.date) - new Date(a.date);
         }
     });
+
+    const handleDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this expense?")) {
+            deleteExpense(id);
+        }
+    };
 
     return (
         <div>
@@ -69,12 +76,25 @@ const Home = () => {
 
             <ul>
                 {sortedExpenses.map((item) => (
-                    <li key={item.id}>
-                        {item.date} - {item.category} - {item.amount} บาท
-                        <button className="delete-button" onClick={() => deleteExpense(item.id)}>
-                            Delete
-                        </button>
-                    </li>
+                    <div key={item.id} className="expense-card">
+                        <div>
+                            <b>{item.category}</b> – {item.amount} บาท
+                            <br />
+                            <small>{item.date}</small>
+                        </div>
+
+                        <div>
+                            <Link to={`/edit/${item.id}`}>
+                                <button className="edit">Edit</button>
+                            </Link>
+
+                            <button className="delete-btn"
+                                onClick={() => handleDelete(item.id)}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                 ))}
             </ul>
         </div>

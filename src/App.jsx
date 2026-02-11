@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import AddExpense from "./pages/AddExpense";
 import Dashboard from "./pages/Dashboard";
+import EditExpense from "./pages/EditExpense";
+
 
 const App = () => {
   return (
@@ -20,6 +22,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/add" element={<AddExpense />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/edit/:id" element={<EditExpense />} />
         </Routes>
       </div>
     </Router>

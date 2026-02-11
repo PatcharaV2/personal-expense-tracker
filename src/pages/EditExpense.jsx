@@ -10,6 +10,8 @@ const EditExpense = () => {
 
     const expense = expenses.find((e) => e.id === Number(id));
 
+    const [showConfirm, setShowConfirm] = useState(false);
+
     const [form, setForm] = useState({
         amount: "",
         category: "",
@@ -52,6 +54,12 @@ const EditExpense = () => {
             navigate("/");
         }
     };
+
+    const confirmDelete = () => {
+        deleteExpense(expense.id);
+        navigate("/");
+    };
+
 
 
     if (!expense) {
@@ -111,12 +119,35 @@ const EditExpense = () => {
 
                 <div style={{ marginTop: "15px" }} >
                     <button type="submit">Update</button>
-                    <button type="button" className="delete-btn" onClick={handleDelete}>Delete</button>
+                    <button type="button" className="delete-btn" onClick={() => setShowConfirm(true)}>Delete</button>
                     <button type="button" className="back-btn" onClick={handleBack}>Back</button>
+                    {showConfirm && (
+                        <div className="modal-overlay">
+                            <div className="modal-box">
+                                <h3>Confirm Delete</h3>
+                                <p>Are you sure you want to delete this expense?</p>
+
+                                <div className="modal-actions">
+                                    <button className="confirm-btn" onClick={confirmDelete}>
+                                        Yes, Delete
+                                    </button>
+
+                                    <button
+                                        className="cancel-btn"
+                                        onClick={() => setShowConfirm(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                 </div>
 
             </form>
         </div>
+
     );
 };
 

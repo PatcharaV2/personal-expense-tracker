@@ -28,7 +28,6 @@ const Dashboard = () => {
         })
         .reduce((sum, item) => sum + Number(item.amount), 0);
 
-    // รวมยอดตามหมวดหมู่
     const categorySummary = expenses.reduce((acc, item) => {
         acc[item.category] =
             (acc[item.category] || 0) + Number(item.amount);

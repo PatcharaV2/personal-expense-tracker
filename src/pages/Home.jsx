@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ExpenseContext } from "../context/ExpenseContext";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,9 @@ const Home = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [sortType, setSortType] = useState("date");
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     const filteredExpenses = expenses.filter((item) => {
         if (!startDate || !endDate) return true;
@@ -23,10 +26,9 @@ const Home = () => {
         }
     });
 
-    const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this expense?")) {
-            deleteExpense(id);
-        }
+    const confirmDelete = () => {
+        deleteExpense(selectedId);
+        setShowConfirm(false);
     };
 
     return (
@@ -78,7 +80,7 @@ const Home = () => {
                 {sortedExpenses.map((item) => (
                     <div key={item.id} className="expense-card">
                         <div>
-                            <b>{item.category}</b> – {item.amount} บาท
+                            <b>{item.note}</b> – {item.amount} บาท
                             <br />
                             <small>{item.date}</small>
                         </div>
@@ -89,7 +91,10 @@ const Home = () => {
                             </Link>
 
                             <button className="delete-btn"
-                                onClick={() => handleDelete(item.id)}
+                                onClick={() => {
+                                    setSelectedId(item.id);
+                                    setShowConfirm(true);
+                                }}
                             >
                                 Delete
                             </button>
@@ -97,6 +102,28 @@ const Home = () => {
                     </div>
                 ))}
             </ul>
+
+            {showConfirm && (
+                <div className="modal-overlay">
+                    <div className="modal-box">
+                        <h3>Confirm Delete</h3>
+                        <p>Are you sure you want to delete this expense?</p>
+
+                        <div className="modal-actions">
+                            <button className="confirm-btn" onClick={confirmDelete}>
+                                Yes, Delete
+                            </button>
+
+                            <button
+                                className="cancel-btn"
+                                onClick={() => setShowConfirm(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

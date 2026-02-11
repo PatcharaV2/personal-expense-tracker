@@ -25,8 +25,10 @@ export const ExpenseProvider = ({ children }) => {
         const newExpense = {
             ...expense,
             id: Date.now(),
-            userId: currentUser.username
+            userId: currentUser.username,
+            date: expense.date || new Date().toISOString()
         };
+
 
         setExpenses([...expenses, newExpense]);
     };

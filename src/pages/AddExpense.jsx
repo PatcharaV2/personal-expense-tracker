@@ -67,7 +67,7 @@ const AddExpense = () => {
                 <div className="form-group">
                     <label>Date: </label>
                     <input
-                        type="date"
+                        type="datetime-local"
                         name="date"
                         value={form.date}
                         onChange={handleChange}

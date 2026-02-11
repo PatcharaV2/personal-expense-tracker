@@ -7,10 +7,10 @@ import Dashboard from "./pages/Dashboard";
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className="container">
         <h1>Personal Expense Tracker</h1>
 
-        <nav style={{ marginBottom: "20px" }}>
+        <nav style={{ marginBottom: "20px"}}>
           <Link to="/">Home</Link> |{" "}
           <Link to="/add">Add Expense</Link> |{" "}
           <Link to="/dashboard">Dashboard</Link>

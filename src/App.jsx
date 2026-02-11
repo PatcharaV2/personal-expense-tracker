@@ -10,7 +10,8 @@ import EditExpense from "./pages/EditExpense";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import { UndoProvider } from "./context/UndoContext";
+import UndoSnackbar from "./components/UndoSnackbar";
 
 const AppContent = () => {
   const { currentUser, logout } = useContext(AuthContext);
@@ -22,65 +23,68 @@ const AppContent = () => {
   };
 
   return (
-        <div className="container">
-          <h1>Personal Expense Tracker</h1>
+    <div className="container">
+      <UndoSnackbar />
+      <h1>Personal Expense Tracker</h1>
 
-        {currentUser && (
-          <nav style={{ marginBottom: "20px" }}>
-            <Link to="/">Home</Link> |{" "}
-            <Link to="/add">Add Expense</Link> |{" "}
-            <Link to="/dashboard">Dashboard</Link> |{" "}
-            <span>👤 {currentUser.username}</span> |{" "}
-            <button onClick={handleLogout}>Logout</button>
-          </nav>
-        )}
-          
-          <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/add"
-              element={
-                <ProtectedRoute>
-                  <AddExpense />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/edit/:id"
-              element={
-                <ProtectedRoute>
-                  <EditExpense />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
-    );
-  };
+      {currentUser && (
+        <nav style={{ marginBottom: "20px" }}>
+          <Link to="/">Home</Link> |{" "}
+          <Link to="/add">Add Expense</Link> |{" "}
+          <Link to="/dashboard">Dashboard</Link> |{" "}
+          <span>👤 {currentUser.username}</span> |{" "}
+          <button onClick={handleLogout}>Logout</button>
+        </nav>
+      )}
+
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add"
+          element={
+            <ProtectedRoute>
+              <AddExpense />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditExpense />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </div>
+  );
+};
 
 const App = () => {
-    return(
-      <Router>
+  return (
+    <Router>
+      <UndoProvider>
         <AppContent />
-      </Router>
-    );
-  };
+      </UndoProvider>
+    </Router>
+  );
+};
 
-  export default App;
+export default App;

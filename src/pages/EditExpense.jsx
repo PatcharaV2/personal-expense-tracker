@@ -48,13 +48,6 @@ const EditExpense = () => {
         navigate(-1);
     }
 
-    const handleDelete = () => {
-        if (window.confirm("Are you sure to delete this expense?")) {
-            deleteExpense(expense.id);
-            navigate("/");
-        }
-    };
-
     const confirmDelete = () => {
         deleteExpense(expense.id);
         navigate("/");

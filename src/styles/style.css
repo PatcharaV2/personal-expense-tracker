@@ -219,3 +219,9 @@ select {
   cursor: pointer;
   border-radius: 5px;
 }
+
+.save-btn, .export-btn {
+    background-color: #27ae60;
+    color: white;
+}
+

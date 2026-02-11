@@ -96,7 +96,7 @@ const Home = () => {
         <div>
             <h2>Expense List</h2>
 
-            <button onClick={exportCSV} style={{ marginBottom: "10px" }}>
+            <button className="export-btn" onClick={exportCSV} style={{ marginBottom: "10px" }}>
                 Export CSV
             </button>
 

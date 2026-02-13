@@ -13,7 +13,7 @@ const AddExpense = () => {
         amount: "",
         category: "",
         date: "",
-        note: ""
+        description: ""
     });
 
     const [showModal, setShowModal] = useState(false);
@@ -61,11 +61,11 @@ const AddExpense = () => {
 
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Note: </label>
+                    <label>Description: </label>
                     <input
                         type="text"
-                        name="note"
-                        value={form.note}
+                        name="description"
+                        value={form.description}
                         onChange={handleChange}
                     />
                 </div>
@@ -83,7 +83,7 @@ const AddExpense = () => {
                 <div className="form-group">
                     <label>Date: </label>
                     <input
-                        type="datetime-local"
+                        type="date"
                         name="date"
                         value={form.date}
                         onChange={handleChange}
@@ -112,7 +112,7 @@ const AddExpense = () => {
                         onClick={() => setShowModal(true)}
                         style={{ marginLeft: "10px" }}
                     >
-                        ➕ Add Category
+                        + Category
                     </button>
                 </div>
 

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-ro
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Home from "./pages/Home";
+import Transaction from "./pages/Transaction";
 import AddExpense from "./pages/AddExpense";
 import Dashboard from "./pages/Dashboard";
 import EditExpense from "./pages/EditExpense";
@@ -29,14 +29,14 @@ const AppContent = () => {
   return (
     <div className="container">
       <UndoSnackbar />
-      <h1>Personal Expense Tracker</h1>
+      <h1>Expense Tracker</h1>
 
       {currentUser && (
         <nav style={{ marginBottom: "20px" }}>
-          <Link to="/">Home</Link>|{" "}
+          <Link to="/">Dashboard</Link> |{" "}
           <Link to="/add">Add Expense</Link> |{" "}
           <Link to="/categories">Categories</Link> | {" "}
-          <Link to="/dashboard">Dashboard</Link> |{" "}
+          <Link to="/transactions">Transactions</Link>|{" "}
           <span>👤 {currentUser.username}</span> |{" "}
           <button onClick={handleLogout}>Logout</button>
         </nav>
@@ -45,44 +45,38 @@ const AppContent = () => {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/"
+
+        <Route path="/"
           element={
             <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
+              <Dashboard />
+            </ProtectedRoute>}
         />
-        <Route
-          path="/add"
+        <Route path="/add"
           element={
             <ProtectedRoute>
               <AddExpense />
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/categories"
+        <Route path="/categories"
           element={
             <ProtectedRoute>
               <ManageCategories />
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/edit/:id"
+        <Route path="/edit/:id"
           element={
             <ProtectedRoute>
               <EditExpense />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/transactions"
+          element={
+            <ProtectedRoute>
+              <Transaction />
             </ProtectedRoute>
           }
         />
@@ -99,7 +93,6 @@ const App = () => {
           <AppContent />
         </UndoProvider>
       </CategoryProvider>
-
     </Router>
   );
 };

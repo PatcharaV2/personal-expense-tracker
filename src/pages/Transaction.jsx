@@ -3,7 +3,7 @@ import { ExpenseContext } from "../context/ExpenseContext";
 import { Link } from "react-router-dom";
 import { UndoContext } from "../context/UndoContext";
 
-const Home = () => {
+const Transaction = () => {
     const { expenses, deleteExpense, deleteAllExpenses, restoreExpense } = useContext(ExpenseContext);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -42,6 +42,12 @@ const Home = () => {
         }
     });
 
+    const filteredTotal = sortedExpenses.reduce(
+        (sum, item) => sum + Number(item.amount),
+        0
+    );
+
+
 
     const exportCSV = () => {
         if (sortedExpenses.length === 0) {
@@ -49,13 +55,13 @@ const Home = () => {
             return;
         }
 
-        const headers = ["Date", "Category", "Amount", "Note"];
+        const headers = ["Date", "Category", "Amount", "Description"];
 
         const rows = sortedExpenses.map(item => [
             formatDateTime(item.date),
             item.category,
             item.amount,
-            item.note
+            item.description
         ]);
 
 
@@ -88,9 +94,22 @@ const Home = () => {
     };
 
 
-    const formatDateTime = (dateStr) => {
-        return new Date(dateStr).toLocaleString("th-Th");
+    const formatDate = (dateStr) => {
+        return new Date(dateStr).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
     };
+
+    const formatTime = (dateStr) => {
+        return new Date(dateStr).toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        });
+    };
+
 
     return (
         <div>
@@ -105,14 +124,14 @@ const Home = () => {
 
                 <label>Start: </label>
                 <input
-                    type="datetime-local"
+                    type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
                 />
 
                 <label> End: </label>
                 <input
-                    type="datetime-local"
+                    type="date"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                 />
@@ -142,8 +161,6 @@ const Home = () => {
                 </select>
             </div>
 
-            {sortedExpenses.length === 0 && <p>No expenses found</p>}
-
             <div style={{ marginBottom: "15px" }}>
                 <button
                     className="delete-btn-all"
@@ -153,33 +170,52 @@ const Home = () => {
                     Delete All Expenses
                 </button>
             </div>
+            {sortedExpenses.length === 0 && <p>No expenses found</p>}
+            {sortedExpenses.length > 0 && (
+                <table className="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
 
-            <ul>
-                {sortedExpenses.map((item) => (
-                    <div key={item.id} className="expense-card">
-                        <div>
-                            <b>{item.note}</b> – {item.amount} บาท
-                            <br />
-                            <small>{formatDateTime(item.date)}</small>
-                        </div>
+                    <tbody>
+                        {sortedExpenses.map((item) => (
+                            <tr key={item.id}>
+                                <td>{formatDate(item.date)}</td>
+                                <td>{item.category}</td>
+                                <td>{item.description}</td>
+                                <td>{item.amount} ฿</td>
 
-                        <div>
-                            <Link to={`/edit/${item.id}`}>
-                                <button className="edit">Edit</button>
-                            </Link>
+                                <td>
+                                    <Link to={`/edit/${item.id}`}>
+                                        <button className="edit">Edit</button>
+                                    </Link>
 
-                            <button className="delete-btn"
-                                onClick={() => {
-                                    setSelectedId(item.id);
-                                    setShowConfirm(true);
-                                }}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </ul>
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => {
+                                            setSelectedId(item.id);
+                                            setShowConfirm(true);
+                                        }}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+            <div className="filtered-total">
+                <h3>
+                    Total (Filtered): {filteredTotal.toLocaleString()} ฿
+                </h3>
+            </div>
 
             {showConfirm && (
                 <div className="modal-overlay">
@@ -204,7 +240,7 @@ const Home = () => {
             )}
             {showDeleteAllConfirm && (
                 <div className="modal-overlay">
-                    <div className="modal-box">
+                    <div className="modal-box" style={{width: "340px"}}>
                         <h3>Confirm Delete All</h3>
                         <p>Are you sure you want to delete ALL expenses?</p>
                         <p>You will be able to undo within 10 seconds.</p>
@@ -237,4 +273,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Transaction;

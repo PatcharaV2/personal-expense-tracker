@@ -100,7 +100,7 @@ const ManageCategories = () => {
                 placeholder="New category name"
             />
 
-            <button onClick={handleAdd}>➕ Add</button>
+            <button onClick={handleAdd}>+ Add</button>
 
             {sortedCategories.map((cat) => (
                 <div key={cat.id} style={{ marginBottom: "10px" }}>

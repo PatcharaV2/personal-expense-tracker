@@ -225,3 +225,26 @@ select {
     color: white;
 }
 
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.expense-table th,
+.expense-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.expense-table th {
+  background-color: #f5f5f5;
+}
+
+.filtered-total {
+  margin-top: 20px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 18px;
+}

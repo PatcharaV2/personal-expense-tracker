@@ -58,7 +58,7 @@ const Transaction = () => {
         const headers = ["Date", "Category", "Amount", "Description"];
 
         const rows = sortedExpenses.map(item => [
-            formatDateTime(item.date),
+            formatDate(item.date),
             item.category,
             item.amount,
             item.description
@@ -101,15 +101,6 @@ const Transaction = () => {
             year: "numeric",
         });
     };
-
-    const formatTime = (dateStr) => {
-        return new Date(dateStr).toLocaleTimeString("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-        });
-    };
-
 
     return (
         <div>
